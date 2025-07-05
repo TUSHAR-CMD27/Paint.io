@@ -5,5 +5,8 @@ export default defineConfig({
   plugins: [react()],
   build: {
     sourcemap: false
+  },
+  server: {
+    historyApiFallback: true
   }
 })
