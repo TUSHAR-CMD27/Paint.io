@@ -1,0 +1,159 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  background-color: #f2f2f2;
+  font-family: 'Segoe UI', sans-serif;
+}
+.navbar-logo a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+
+.navbar-logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.navbar-links {
+  display: flex;
+}
+
+.navbar-links a {
+  margin-left: 1rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  background-color: #eee;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  background-color: #ddd;
+}
+
+.welcome-text {
+  margin-left: 1rem;
+  padding: 0.6rem 1.2rem;
+  color: #333;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn {
+  margin-left: 1rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  background-color: #ff4757;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #ff3742;
+}
+
+.create-post-link {
+  margin-left: 1rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.create-post-link:hover {
+  background-color: #45a049;
+}
+
+/* Mobile menu styles */
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.hamburger {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 3px 0;
+  transition: 0.3s;
+  border-radius: 2px;
+}
+
+.hamburger.active:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger.active:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  .navbar-links {
+    position: fixed;
+    top: 70px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background-color: #f2f2f2;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 2rem;
+    transition: 0.3s;
+    gap: 1rem;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-links.active {
+    left: 0;
+  }
+  
+  .navbar-links a {
+    margin: 0.5rem 0;
+    width: 80%;
+    text-align: center;
+  }
+  
+  .welcome-text {
+    margin: 0.5rem 0;
+    text-align: center;
+  }
+  
+  .logout-btn, .create-post-link {
+    margin: 0.5rem 0;
+    width: 80%;
+  }
+}

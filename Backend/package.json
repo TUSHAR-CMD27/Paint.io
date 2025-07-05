@@ -1,0 +1,26 @@
+{
+  "name": "paint-io-backend",
+  "version": "1.0.0",
+  "description": "Backend for Paint.io - Art sharing platform",
+  "main": "Server.js",
+  "scripts": {
+    "start": "node Server.js",
+    "dev": "nodemon Server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.1",
+    "multer": "^2.0.1"
+  },
+  "keywords": ["art", "sharing", "platform", "mongodb", "express"],
+  "author": "Your Name",
+  "license": "MIT"
+}

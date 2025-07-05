@@ -1,0 +1,31 @@
+.footer {
+  padding: 1.5rem;
+  background-color: #f2f2f2;
+  color: #555;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  margin-top: 4rem;
+  border-top: 1px solid #ddd;
+}
+
+.footer .tagline {
+  font-style: italic;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.8rem;
+}
+
+.footer .socials {
+  margin: 0.6rem 0;
+}
+
+.footer .socials a {
+  margin: 0 0.8rem;
+  color: #333;
+  font-size: 1.3rem;
+  transition: color 0.3s ease;
+}
+
+.footer .socials a:hover {
+  color: #e1306c; /* Instagram pink */
+}

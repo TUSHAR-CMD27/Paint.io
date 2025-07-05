@@ -1,0 +1,151 @@
+.landing {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f9f9f9, #e6e6e6);
+  font-family: 'Segoe UI', sans-serif;
+
+  min-height: auto;
+  padding-bottom: 1rem;
+}
+
+.headline {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  color: #333;
+  letter-spacing: 1px;
+}
+
+.subheadline {
+  font-size: 1.3rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.hero-images-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.hero-images-grid img {
+  width: 180px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.hero-images-grid img:hover {
+  transform: scale(1.04);
+} 
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.primary-btn {
+  background-color: #491603;
+  color: white;
+  text-decoration: none;
+}
+
+.primary-btn:hover {
+  background-color: #231914;
+  transform: translateY(-2px);
+}
+
+.secondary-btn {
+  background-color: transparent;
+  border: 2px solid #521b0a;
+  text-decoration: none;
+  color: #521b0a;
+}
+
+.secondary-btn:hover {
+  background-color: #ffffff;
+  color: rgb(7, 7, 7);
+  transform: translateY(-2px);
+}
+
+.landing-explore-section {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.landing-explore-section h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .landing {
+    padding: 1rem;
+  }
+  
+  .headline {
+    font-size: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .subheadline {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-images-grid {
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+  
+  .hero-images-grid img {
+    width: 140px;
+    height: 200px;
+  }
+  
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+  
+  .primary-btn,
+  .secondary-btn {
+    width: 80%;
+    max-width: 250px;
+    padding: 0.8rem 1.2rem;
+  }
+  
+  .landing-explore-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+  }
+  
+  .landing-explore-section h2 {
+    font-size: 1.5rem;
+  }
+}
