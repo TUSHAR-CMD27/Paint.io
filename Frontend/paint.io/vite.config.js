@@ -1,7 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({
+    jsxRuntime: 'classic' // 👈 disables use of `eval` in dev tools
+  })],
+  build: {
+    sourcemap: false // ⛔ prevents inline scripts via source maps
+  }
 })
