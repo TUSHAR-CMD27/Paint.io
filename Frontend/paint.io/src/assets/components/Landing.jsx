@@ -16,6 +16,14 @@ export default function Landing() {
 
   return (
     <div className="landing">
+      {/* Welcome message for logged-in users */}
+      {user && (
+        <div className="welcome-message">
+          <h2>Welcome, {user.firstname}! 👋</h2>
+        
+        </div>
+      )}
+
       <h1 className="headline">UNLEASH YOUR CREATIVITY</h1>
       <p className="subheadline">A space to share art and discover artists</p>
 
