@@ -118,7 +118,7 @@
 .side-drawer {
   position: fixed;
   top: 0;
-  left: -80vw;
+  left: 0;
   width: 75vw;
   max-width: 320px;
   height: 100vh;
@@ -129,10 +129,11 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 2rem 1.5rem 1.5rem 1.5rem;
-  transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
 }
 .side-drawer.open {
-  left: 0;
+  transform: translateX(0);
 }
 .close-drawer {
   background: none;
