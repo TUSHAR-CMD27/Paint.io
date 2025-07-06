@@ -64,12 +64,16 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.35);
-  z-index: 1000;
-  display: none;
+  background: #181818; /* solid dark background */
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1);
+  display: block;
 }
 .menu-overlay.active {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .headline {

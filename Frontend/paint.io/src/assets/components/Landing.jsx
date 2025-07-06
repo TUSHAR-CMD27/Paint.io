@@ -28,12 +28,7 @@ export default function Landing() {
         <img src={Tempimg6} alt="Art 6" />
       </div>
       
-      {/* User's name above Explore Feed */}
-      {user && (
-        <div className="welcome-message compact">
-          <span>Welcome, {user.firstname}! 👋</span>
-        </div>
-      )}
+      
       <div className="button-group">
         <Link className="primary-btn" to="/explore">Explore Feed</Link>
         {user ? (

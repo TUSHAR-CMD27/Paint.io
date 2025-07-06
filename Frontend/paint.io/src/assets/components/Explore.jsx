@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Explore.css';
 import CreatePost from './CreatePost';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 import Tempimg1 from '../Imgs/Tempimg1.jpg';
 import Tempimg2 from '../Imgs/Tempimg2.jpg';
@@ -21,6 +22,7 @@ const fallbackCards = [
 ];
 
 export default function Explore() {
+  const { user } = useAuth();
   const [search, setSearch] = useState('');
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -129,7 +131,9 @@ export default function Explore() {
   return (
     <div className="explore-container">
       <h2>Explore Gallery</h2>
-      
+      {user && (
+        <div className="explore-welcome-user">Welcome, {user.firstname}! 👋</div>
+      )}
       <input
         type="text"
         className="search-box"

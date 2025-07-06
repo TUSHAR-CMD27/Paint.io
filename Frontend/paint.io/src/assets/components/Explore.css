@@ -206,3 +206,21 @@
   font-size: 1.1rem;
   margin: 0;
 }
+
+.explore-welcome-user {
+  color: #521b0a;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  margin-top: -0.5rem;
+  letter-spacing: 0.2px;
+  text-align: center;
+  animation: fadeInUp 0.5s;
+}
+
+@media (max-width: 600px) {
+  .explore-welcome-user {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+}
