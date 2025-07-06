@@ -12,25 +12,6 @@
   text-align: center;
 }
 
-/* Performance Stats */
-.performance-stats {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.performance-stats span {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .search-box {
   width: 100%;
   max-width: 500px;
@@ -160,12 +141,6 @@
   .masonry-grid {
     column-count: 2;
   }
-  
-  .performance-stats {
-    flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
-  }
 }
 
 @media (max-width: 600px) {
@@ -203,11 +178,6 @@
   
   .image-container {
     min-height: 150px;
-  }
-  
-  .performance-stats {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
   }
 }
 

@@ -27,12 +27,6 @@ export default function Explore() {
   const [error, setError] = useState(null);
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [imageLoadErrors, setImageLoadErrors] = useState(new Set());
-  const [performanceStats, setPerformanceStats] = useState({
-    startTime: Date.now(),
-    loadTime: 0,
-    imagesLoaded: 0,
-    totalImages: 0
-  });
   const observerRef = useRef(null);
   const imageRefs = useRef(new Map());
 
@@ -42,7 +36,6 @@ export default function Explore() {
   }, []);
 
   const fetchPosts = async () => {
-    const startTime = Date.now();
     try {
       setLoading(true);
       const response = await axios.get('https://paint-io-backend.onrender.com/api/posts/all');
@@ -52,21 +45,11 @@ export default function Explore() {
       const combinedPosts = [...backendPosts, ...fallbackCards];
       
       setCards(combinedPosts);
-      setPerformanceStats(prev => ({
-        ...prev,
-        totalImages: combinedPosts.length,
-        loadTime: Date.now() - startTime
-      }));
     } catch (error) {
       console.error('Error fetching posts:', error);
       setError('Failed to load posts from backend, showing sample posts');
       // Use only fallback cards if API fails
       setCards(fallbackCards);
-      setPerformanceStats(prev => ({
-        ...prev,
-        totalImages: fallbackCards.length,
-        loadTime: Date.now() - startTime
-      }));
     } finally {
       setLoading(false);
     }
@@ -132,10 +115,6 @@ export default function Explore() {
   // Handle image load
   const handleImageLoad = useCallback((index) => {
     setLoadedImages(prev => new Set(prev).add(index));
-    setPerformanceStats(prev => ({
-      ...prev,
-      imagesLoaded: prev.imagesLoaded + 1
-    }));
   }, []);
 
   // Handle image error
@@ -179,14 +158,6 @@ export default function Explore() {
   return (
     <div className="explore-container">
       <h2>Explore Gallery</h2>
-      
-      {/* Performance Stats */}
-      {!loading && performanceStats.totalImages > 0 && (
-        <div className="performance-stats">
-          <span>⚡ Loaded in {performanceStats.loadTime}ms</span>
-          <span>🖼️ {performanceStats.imagesLoaded}/{performanceStats.totalImages} images loaded</span>
-        </div>
-      )}
       
       <input
         type="text"
