@@ -19,6 +19,19 @@
   animation: fadeInUp 0.6s ease-out;
 }
 
+/* Compact welcome message for above Explore Feed */
+.welcome-message.compact {
+  background: none;
+  color: #521b0a;
+  padding: 0.2rem 0;
+  margin-bottom: 0.2rem;
+  box-shadow: none;
+  border-radius: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  animation: none;
+}
+
 .welcome-message h2 {
   font-size: 1.8rem;
   margin: 0 0 0.5rem 0;
@@ -42,6 +55,21 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Overlay for mobile menu */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.35);
+  z-index: 1000;
+  display: none;
+}
+.menu-overlay.active {
+  display: block;
 }
 
 .headline {
@@ -142,6 +170,11 @@
     padding: 1rem;
   }
   
+  .welcome-message.compact {
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+  }
+  
   .welcome-message {
     padding: 1.2rem;
     margin-bottom: 1.5rem;
@@ -203,6 +236,10 @@
 
 /* Extra small mobile devices */
 @media (max-width: 480px) {
+  .welcome-message.compact {
+    font-size: 0.95rem;
+  }
+  
   .welcome-message {
     padding: 1rem;
     margin-bottom: 1rem;

@@ -16,14 +16,6 @@ export default function Landing() {
 
   return (
     <div className="landing">
-      {/* Welcome message for logged-in users */}
-      {user && (
-        <div className="welcome-message">
-          <h2>Welcome, {user.firstname}! 👋</h2>
-        
-        </div>
-      )}
-
       <h1 className="headline">UNLEASH YOUR CREATIVITY</h1>
       <p className="subheadline">A space to share art and discover artists</p>
 
@@ -36,6 +28,12 @@ export default function Landing() {
         <img src={Tempimg6} alt="Art 6" />
       </div>
       
+      {/* User's name above Explore Feed */}
+      {user && (
+        <div className="welcome-message compact">
+          <span>Welcome, {user.firstname}! 👋</span>
+        </div>
+      )}
       <div className="button-group">
         <Link className="primary-btn" to="/explore">Explore Feed</Link>
         {user ? (
@@ -46,10 +44,9 @@ export default function Landing() {
         )}
       </div>
       
-      
       {user && (
         <div className="landing-explore-section">
-         {/* <h2>Discover Amazing Artwork</h2> */}
+        
           <Explore />
         </div>
       )}
