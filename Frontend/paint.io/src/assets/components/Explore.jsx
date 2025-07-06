@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Explore.css';
 import CreatePost from './CreatePost';
 import axios from 'axios';
@@ -25,6 +25,16 @@ export default function Explore() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loadedImages, setLoadedImages] = useState(new Set());
+  const [imageLoadErrors, setImageLoadErrors] = useState(new Set());
+  const [performanceStats, setPerformanceStats] = useState({
+    startTime: Date.now(),
+    loadTime: 0,
+    imagesLoaded: 0,
+    totalImages: 0
+  });
+  const observerRef = useRef(null);
+  const imageRefs = useRef(new Map());
 
   // Fetch posts from backend when component mounts
   useEffect(() => {
@@ -32,6 +42,7 @@ export default function Explore() {
   }, []);
 
   const fetchPosts = async () => {
+    const startTime = Date.now();
     try {
       setLoading(true);
       const response = await axios.get('https://paint-io-backend.onrender.com/api/posts/all');
@@ -41,15 +52,120 @@ export default function Explore() {
       const combinedPosts = [...backendPosts, ...fallbackCards];
       
       setCards(combinedPosts);
+      setPerformanceStats(prev => ({
+        ...prev,
+        totalImages: combinedPosts.length,
+        loadTime: Date.now() - startTime
+      }));
     } catch (error) {
       console.error('Error fetching posts:', error);
       setError('Failed to load posts from backend, showing sample posts');
       // Use only fallback cards if API fails
       setCards(fallbackCards);
+      setPerformanceStats(prev => ({
+        ...prev,
+        totalImages: fallbackCards.length,
+        loadTime: Date.now() - startTime
+      }));
     } finally {
       setLoading(false);
     }
   };
+
+  // Lazy loading setup with intersection observer
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.dataset.src;
+            if (src && !img.src) {
+              // Preload image
+              const tempImg = new Image();
+              tempImg.onload = () => {
+                img.src = src;
+                img.classList.remove('lazy');
+                img.classList.add('loaded');
+                const index = parseInt(img.dataset.index);
+                handleImageLoad(index);
+                observerRef.current.unobserve(img);
+              };
+              tempImg.onerror = () => {
+                const index = parseInt(img.dataset.index);
+                handleImageError(index);
+                observerRef.current.unobserve(img);
+              };
+              tempImg.src = src;
+            }
+          }
+        });
+      },
+      {
+        rootMargin: '100px 0px', // Start loading 100px before image comes into view
+        threshold: 0.1
+      }
+    );
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  // Observe images when cards change
+  useEffect(() => {
+    if (observerRef.current) {
+      // Clear previous observations
+      observerRef.current.disconnect();
+      
+      // Re-observe all lazy images
+      imageRefs.current.forEach((imgRef) => {
+        if (imgRef && imgRef.classList.contains('lazy')) {
+          observerRef.current.observe(imgRef);
+        }
+      });
+    }
+  }, [cards]);
+
+  // Handle image load
+  const handleImageLoad = useCallback((index) => {
+    setLoadedImages(prev => new Set(prev).add(index));
+    setPerformanceStats(prev => ({
+      ...prev,
+      imagesLoaded: prev.imagesLoaded + 1
+    }));
+  }, []);
+
+  // Handle image error
+  const handleImageError = useCallback((index) => {
+    setImageLoadErrors(prev => new Set(prev).add(index));
+  }, []);
+
+  // Optimize image URL for better performance
+  const getOptimizedImageUrl = (imageUrl) => {
+    if (!imageUrl) return '';
+    
+    // If it's a Cloudinary URL, add optimization parameters
+    if (imageUrl.includes('cloudinary.com')) {
+      // Add Cloudinary optimization parameters for better performance
+      const optimizedUrl = imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_400/');
+      return optimizedUrl;
+    }
+    
+    return imageUrl;
+  };
+
+  // Set image ref for intersection observer
+  const setImageRef = useCallback((img, index) => {
+    if (img) {
+      imageRefs.current.set(index, img);
+      if (observerRef.current && img.classList.contains('lazy')) {
+        observerRef.current.observe(img);
+      }
+    }
+  }, []);
 
   const filteredCards = cards.filter(card =>
     card.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -63,6 +179,15 @@ export default function Explore() {
   return (
     <div className="explore-container">
       <h2>Explore Gallery</h2>
+      
+      {/* Performance Stats */}
+      {!loading && performanceStats.totalImages > 0 && (
+        <div className="performance-stats">
+          <span>⚡ Loaded in {performanceStats.loadTime}ms</span>
+          <span>🖼️ {performanceStats.imagesLoaded}/{performanceStats.totalImages} images loaded</span>
+        </div>
+      )}
+      
       <input
         type="text"
         className="search-box"
@@ -73,6 +198,7 @@ export default function Explore() {
 
       {loading && (
         <div className="loading-message">
+          <div className="loading-spinner"></div>
           <p>Loading posts...</p>
         </div>
       )}
@@ -84,13 +210,37 @@ export default function Explore() {
       )}
 
       <div className="masonry-grid">
-        {filteredCards.map((card, index) => (
-          <div className="masonry-card" key={card._id || index}>
-            <img src={card.imageUrl || card.img} alt={card.title} />
-            <h4>{card.title}</h4>
-            <p>{card.caption}</p>
-          </div>
-        ))}
+        {filteredCards.map((card, index) => {
+          const imageUrl = card.imageUrl || card.img;
+          const optimizedUrl = getOptimizedImageUrl(imageUrl);
+          const isLoaded = loadedImages.has(index);
+          const hasError = imageLoadErrors.has(index);
+          
+          return (
+            <div className="masonry-card" key={card._id || index}>
+              <div className="image-container">
+                {!isLoaded && !hasError && (
+                  <div className="image-skeleton"></div>
+                )}
+                <img 
+                  ref={(img) => setImageRef(img, index)}
+                  className="lazy"
+                  data-src={optimizedUrl}
+                  data-index={index}
+                  alt={card.title}
+                  style={{ display: isLoaded ? 'block' : 'none' }}
+                />
+                {hasError && (
+                  <div className="image-error">
+                    <span>Image failed to load</span>
+                  </div>
+                )}
+              </div>
+              <h4>{card.title}</h4>
+              <p>{card.caption}</p>
+            </div>
+          );
+        })}
       </div>
 
       <CreatePost onAdd={handleAddPost} />

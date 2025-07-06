@@ -21,14 +21,15 @@ router.post("/create", upload.single('image'), async (req, res) => {
       return res.status(500).json({ error: "Cloudinary not configured. Please check your .env file." });
     }
 
-    // Upload image to Cloudinary
+    // Upload image to Cloudinary with optimization
     const uploadPromise = new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
           resource_type: 'auto',
           folder: 'paint-io',
           transformation: [
-            { width: 800, height: 600, crop: 'limit' } // Resize large images
+            { width: 800, height: 600, crop: 'limit' }, // Resize large images
+            { quality: 'auto', fetch_format: 'auto' } // Auto-optimize format and quality
           ]
         },
         (error, result) => {
@@ -66,13 +67,31 @@ router.post("/create", upload.single('image'), async (req, res) => {
   }
 });
 
-// Get all posts
+// Get all posts with caching and optimization
 router.get("/all", async (req, res) => {
   try {
-    const posts = await Post.find()
-      .sort({ createdAt: -1 }); // Newest first
+    // Add caching headers for better performance
+    res.set({
+      'Cache-Control': 'public, max-age=300', // Cache for 5 minutes
+      'ETag': `posts-${Date.now()}`
+    });
 
-    res.status(200).json({ posts });
+    const posts = await Post.find()
+      .sort({ createdAt: -1 }) // Newest first
+      .select('title caption imageUrl createdAt') // Only select needed fields
+      .limit(50); // Limit to prevent overwhelming response
+
+    // Add optimized image URLs
+    const optimizedPosts = posts.map(post => ({
+      ...post.toObject(),
+      imageUrl: post.imageUrl ? post.imageUrl.replace('/upload/', '/upload/f_auto,q_auto,w_400/') : post.imageUrl
+    }));
+
+    res.status(200).json({ 
+      posts: optimizedPosts,
+      total: posts.length,
+      cached: true
+    });
   } catch (err) {
     console.error("Get posts error:", err);
     res.status(500).json({ error: "Internal server error" });
@@ -88,16 +107,18 @@ router.get("/:id", async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    // Add caching headers
+    res.set({
+      'Cache-Control': 'public, max-age=600', // Cache for 10 minutes
+      'ETag': `post-${post._id}-${post.updatedAt.getTime()}`
+    });
+
     res.status(200).json({ post });
   } catch (err) {
     console.error("Get post error:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
-
-
 
 // Delete post
 router.delete("/:id", async (req, res) => {
@@ -114,7 +135,5 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
 
 module.exports = router; 

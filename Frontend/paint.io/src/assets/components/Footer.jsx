@@ -4,7 +4,7 @@ import './Footer.css';
 export default function Footer() {
   return (
     <footer className="footer">
-      <p className="tagline">Bringing your imagination to paper, one sketch at a time.</p>
+      <p className="tagline">A Pinterest inspired Webpage</p>
       <div className="socials">
         <a href="https://www.instagram.com/_.2shar.__/?__pwa=1#" target="_blank" rel="noopener noreferrer">
           <i className="fab fa-instagram"></i>
