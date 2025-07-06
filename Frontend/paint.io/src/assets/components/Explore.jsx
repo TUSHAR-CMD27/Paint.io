@@ -28,7 +28,6 @@ export default function Explore() {
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [imageLoadErrors, setImageLoadErrors] = useState(new Set());
   const observerRef = useRef(null);
-  const imageRefs = useRef(new Map());
 
   // Fetch posts from backend when component mounts
   useEffect(() => {
@@ -64,28 +63,18 @@ export default function Explore() {
             const img = entry.target;
             const src = img.dataset.src;
             if (src && !img.src) {
-              // Preload image
-              const tempImg = new Image();
-              tempImg.onload = () => {
-                img.src = src;
-                img.classList.remove('lazy');
-                img.classList.add('loaded');
-                const index = parseInt(img.dataset.index);
-                handleImageLoad(index);
-                observerRef.current.unobserve(img);
-              };
-              tempImg.onerror = () => {
-                const index = parseInt(img.dataset.index);
-                handleImageError(index);
-                observerRef.current.unobserve(img);
-              };
-              tempImg.src = src;
+              img.src = src;
+              img.classList.remove('lazy');
+              img.classList.add('loaded');
+              const index = parseInt(img.dataset.index);
+              handleImageLoad(index);
+              observerRef.current.unobserve(img);
             }
           }
         });
       },
       {
-        rootMargin: '100px 0px', // Start loading 100px before image comes into view
+        rootMargin: '50px 0px', // Start loading 50px before image comes into view
         threshold: 0.1
       }
     );
@@ -96,21 +85,6 @@ export default function Explore() {
       }
     };
   }, []);
-
-  // Observe images when cards change
-  useEffect(() => {
-    if (observerRef.current) {
-      // Clear previous observations
-      observerRef.current.disconnect();
-      
-      // Re-observe all lazy images
-      imageRefs.current.forEach((imgRef) => {
-        if (imgRef && imgRef.classList.contains('lazy')) {
-          observerRef.current.observe(imgRef);
-        }
-      });
-    }
-  }, [cards]);
 
   // Handle image load
   const handleImageLoad = useCallback((index) => {
@@ -138,11 +112,8 @@ export default function Explore() {
 
   // Set image ref for intersection observer
   const setImageRef = useCallback((img, index) => {
-    if (img) {
-      imageRefs.current.set(index, img);
-      if (observerRef.current && img.classList.contains('lazy')) {
-        observerRef.current.observe(img);
-      }
+    if (img && observerRef.current) {
+      observerRef.current.observe(img);
     }
   }, []);
 
@@ -199,7 +170,7 @@ export default function Explore() {
                   data-src={optimizedUrl}
                   data-index={index}
                   alt={card.title}
-                  style={{ display: isLoaded ? 'block' : 'none' }}
+                  onError={() => handleImageError(index)}
                 />
                 {hasError && (
                   <div className="image-error">

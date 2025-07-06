@@ -80,6 +80,7 @@
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
+  z-index: 1;
 }
 
 @keyframes loading {
@@ -106,6 +107,7 @@
   font-size: 0.9rem;
   text-align: center;
   padding: 1rem;
+  z-index: 2;
 }
 
 .masonry-card h4 {
