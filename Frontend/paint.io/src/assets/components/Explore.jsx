@@ -132,7 +132,7 @@ export default function Explore() {
     <div className="explore-container">
       <h2>Explore Gallery</h2>
       {user && (
-        <div className="explore-welcome-user">Welcome, {user.firstname}! 👋</div>
+        <div className="explore-welcome-user">Welcome, {user.firstname}! </div>
       )}
       <input
         type="text"

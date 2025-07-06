@@ -154,11 +154,53 @@
 .side-drawer-links .logout-btn,
 .side-drawer-links .create-post-link {
   width: 100%;
+  max-width: 100%;
   margin: 0;
   text-align: left;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  padding: 0.8rem 1rem;
+  border-radius: 16px;
+  font-size: 1.08rem;
+  padding: 0.7rem 1.1rem;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 500;
+  background: #eee;
+  color: #333;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  display: block;
+}
+.side-drawer-links a:hover,
+.side-drawer-links .create-post-link:hover {
+  background: #ddd;
+  color: #111;
+  text-decoration: none;
+}
+.side-drawer-links .create-post-link {
+  background: #4CAF50;
+  color: #fff;
+}
+.side-drawer-links .create-post-link:hover {
+  background: #45a049;
+  color: #fff;
+}
+.side-drawer-links .logout-btn {
+  background: #ff4757;
+  color: #fff;
+  border: none;
+}
+.side-drawer-links .logout-btn:hover {
+  background: #ff3742;
+  color: #fff;
+}
+.side-drawer-links .welcome-text {
+  background: none;
+  color: #521b0a;
+  font-weight: 600;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .drawer-overlay {
