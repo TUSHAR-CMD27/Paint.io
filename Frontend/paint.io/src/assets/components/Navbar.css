@@ -5,6 +5,8 @@
   padding: 1.2rem 2rem;
   background-color: #f2f2f2;
   font-family: 'Segoe UI', sans-serif;
+  position: relative;
+  z-index: 3000;
 }
 .navbar-logo a {
   text-decoration: none;
@@ -19,11 +21,11 @@
   font-weight: bold;
 }
 
-.navbar-links {
+.navbar-links-desktop {
   display: flex;
 }
 
-.navbar-links a {
+.navbar-links-desktop a {
   margin-left: 1rem;
   padding: 0.6rem 1.2rem;
   border: none;
@@ -36,7 +38,7 @@
   transition: background-color 0.3s ease;
 }
 
-.navbar-links a:hover {
+.navbar-links-desktop a:hover {
   background-color: #ddd;
 }
 
@@ -88,6 +90,7 @@
   flex-direction: column;
   cursor: pointer;
   padding: 0.5rem;
+  z-index: 4001;
 }
 
 .hamburger {
@@ -111,49 +114,70 @@
   transform: rotate(45deg) translate(-5px, -6px);
 }
 
+/* Side drawer styles */
+.side-drawer {
+  position: fixed;
+  top: 0;
+  left: -80vw;
+  width: 75vw;
+  max-width: 320px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.18);
+  z-index: 4000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.side-drawer.open {
+  left: 0;
+}
+.close-drawer {
+  background: none;
+  border: none;
+  font-size: 2.2rem;
+  color: #521b0a;
+  align-self: flex-end;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+.side-drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+.side-drawer-links a,
+.side-drawer-links .welcome-text,
+.side-drawer-links .logout-btn,
+.side-drawer-links .create-post-link {
+  width: 100%;
+  margin: 0;
+  text-align: left;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  padding: 0.8rem 1rem;
+}
+
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.18);
+  z-index: 3500;
+  transition: opacity 0.3s;
+}
+
 /* Responsive design */
-@media (max-width: 768px) {
-  .navbar {
-    padding: 1rem;
+@media (max-width: 900px) {
+  .navbar-links-desktop {
+    display: none;
   }
-  
   .mobile-menu-btn {
     display: flex;
-  }
-  
-  .navbar-links {
-    position: fixed;
-    top: 70px;
-    left: -100%;
-    width: 100%;
-    height: calc(100vh - 70px);
-    background-color: #f2f2f2;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding-top: 2rem;
-    transition: 0.3s;
-    gap: 1rem;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar-links.active {
-    left: 0;
-  }
-  
-  .navbar-links a {
-    margin: 0.5rem 0;
-    width: 80%;
-    text-align: center;
-  }
-  
-  .welcome-text {
-    margin: 0.5rem 0;
-    text-align: center;
-  }
-  
-  .logout-btn, .create-post-link {
-    margin: 0.5rem 0;
-    width: 80%;
   }
 }
